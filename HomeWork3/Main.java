@@ -9,13 +9,13 @@ public class Main {
     public static void main(String[] args) {
         MyTree tree=new MyTree();
 
-//        tree.add(8);
-//        tree.add(1);
-//        tree.add(3);
-//        tree.add(4);
 //        tree.add(5);
-//        tree.add(6);
-//        tree.add(7);
+//        tree.add(3);
+//        tree.add(15);
+//        tree.add(1);
+//        tree.add(8);
+//        tree.add(24);
+
         Random rnd=new Random();
         int count=7;
         for(int i=0; i<count; i++) { tree.add(rnd.nextInt(100));}

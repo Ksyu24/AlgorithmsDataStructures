@@ -108,6 +108,9 @@ public class MyTree {
         node.leftChild.color=Color.BLACK;
         node.color=Color.RED;
     }
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
 
 
     public void printTree() {
@@ -126,7 +129,9 @@ public class MyTree {
             while (globalStack.isEmpty() == false) {
                 Node temp = (Node) globalStack.pop();
                 if (temp != null) {
-                    System.out.print(temp.getValue());
+                    if(temp.getColor()==Color.RED) {System.out.print(ANSI_RED + temp.getValue() + ANSI_RESET);}
+                    else if (temp.getColor()==Color.BLACK) {System.out.print(ANSI_BLACK + temp.getValue() + ANSI_RESET);}
+                    else {System.out.print(temp.getValue());}
                     localStack.push(temp.getLeftChild());
                     localStack.push(temp.getRightChild());
                     if (temp.getLeftChild() != null ||
@@ -165,6 +170,9 @@ public class MyTree {
 
         public Node getRightChild() {
             return rightChild;
+        }
+        public Color getColor() {
+            return color;
         }
     }
 
