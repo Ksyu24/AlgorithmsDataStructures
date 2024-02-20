@@ -1,5 +1,7 @@
 package HomeWork3;
 
+import java.util.Stack;
+
 public class MyTree {
     private Node root;
 
@@ -38,20 +40,21 @@ public class MyTree {
             }
             else {
                 if(node.rightChild!=null){
-                     boolean result=addNode(node.rightChild,value);
-                     node.rightChild=rebalance(node.rightChild);
-                     return result;
-                    }
+                    boolean result=addNode(node.rightChild,value);
+                    node.rightChild=rebalance(node.rightChild);
+                    return result;
+                }
                 else {
                     node.rightChild=new Node();
                     node.rightChild.color=Color.RED;
                     node.rightChild.value=value;
-                     return true;
+                    return true;
                 }
 
             }
         }
     }
+
 
     //ребалансировка
     private Node rebalance(Node node){
@@ -59,20 +62,17 @@ public class MyTree {
         boolean needRebalance;
         do{
             needRebalance=false;
-            if(result.rightChild!=null && result.rightChild.color==Color.RED &&
-                    (result.leftChild==null || result.leftChild.color==Color.BLACK))
+            if(result.rightChild!=null && result.rightChild.color==Color.RED && (result.leftChild==null  || result.leftChild.color==Color.BLACK))
             {
                 needRebalance=true;
                 result=rightSwap(result);
             }
-            if(result.leftChild!=null && result.leftChild.color==Color.RED &&
-                    (result.leftChild.leftChild!=null || result.leftChild.leftChild.color==Color.RED))
+            if(result.leftChild!=null && result.leftChild.color==Color.RED && (result.leftChild.leftChild!=null && result.leftChild.leftChild.color==Color.RED))
             {
                 needRebalance=true;
                 result=leftSwap(result);
             }
-            if(result.leftChild!=null && result.leftChild.color==Color.RED &&
-                    (result.rightChild!=null || result.rightChild.color==Color.RED))
+            if(result.leftChild!=null && result.leftChild.color==Color.RED && (result.rightChild!=null && result.rightChild.color==Color.RED))
             {
                 needRebalance=true;
                 colorSwap(result);
@@ -110,13 +110,62 @@ public class MyTree {
     }
 
 
+    public void printTree() {
+        Stack globalStack = new Stack();
+        globalStack.push(root);
+        int gaps = 32;
+        boolean isRowEmpty = false;
+        String separator = "-----------------------------------------------------------------";
+        System.out.println(separator);
+        while (isRowEmpty == false) {
+            Stack localStack = new Stack();
+            isRowEmpty = true;
+
+            for (int j = 0; j < gaps; j++)
+                System.out.print(' ');
+            while (globalStack.isEmpty() == false) {
+                Node temp = (Node) globalStack.pop();
+                if (temp != null) {
+                    System.out.print(temp.getValue());
+                    localStack.push(temp.getLeftChild());
+                    localStack.push(temp.getRightChild());
+                    if (temp.getLeftChild() != null ||
+                            temp.getRightChild() != null)
+                        isRowEmpty = false;
+                }
+                else {
+                    System.out.print("__");
+                    localStack.push(null);
+                    localStack.push(null);
+                }
+                for (int j = 0; j < gaps * 2 - 2; j++)
+                    System.out.print(' ');
+            }
+            System.out.println();
+            gaps /= 2;
+            while (localStack.isEmpty() == false)
+                globalStack.push(localStack.pop());
+        }
+        System.out.println(separator);
+    }
+
     private class Node{
         private int value;
         private Color color;
         private Node leftChild;
         private Node rightChild;
 
+        public int getValue() {
+            return value;
+        }
 
+        public Node getLeftChild() {
+            return leftChild;
+        }
+
+        public Node getRightChild() {
+            return rightChild;
+        }
     }
 
     private enum Color{
